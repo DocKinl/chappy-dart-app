@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>X01 Setup</title>
+
+<style>
+
+:root{
+--bg:#0f172a;
+--card:#1e293b;
+--text:white;
+--accent:#dc2626;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+font-family:Arial,sans-serif;
+padding:20px;
+padding-bottom:100px;
+}
+
+.card{
+background:var(--card);
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
+}
+
+select{
+width:100%;
+padding:15px;
+margin-top:10px;
+margin-bottom:15px;
+border-radius:10px;
+}
+
+button{
+width:100%;
+padding:18px;
+border:none;
+border-radius:12px;
+background:var(--accent);
+color:white;
+font-size:18px;
+}
+
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:#111827;
+display:flex;
+justify-content:space-around;
+padding:15px;
+}
+
+.nav a{
+color:white;
+text-decoration:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🎯 X01 konfigurieren</h1>
+
+<div class="card">
+
+<label>Startscore</label>
+
+<select id="startScore">
+<option value="301">301</option>
+<option value="501" selected>501</option>
+<option value="701">701</option>
+</select>
+
+<label>Out-Regel</label>
+
+<select id="outRule">
+<option value="double">Double Out</option>
+<option value="straight">Straight Out</option>
+</select>
+
+<label>Eingabemodus</label>
+
+<select id="inputMode">
+<option value="score">Score-Modus</option>
+<option value="throw">Wurf-Modus</option>
+</select>
+
+<label>Legs</label>
+
+<select id="legs">
+<option value="3">Best of 3</option>
+<option value="5" selected>Best of 5</option>
+<option value="7">Best of 7</option>
+</select>
+
+<button onclick="startGame()">
+Spiel starten
+</button>
+
+</div>
+
+<div class="nav">
+<a href="index.html">🏠 Home</a>
+<a href="stats.html">📊 Statistik</a>
+<a href="settings.html">⚙️ Einstellungen</a>
+</div>
+
+<script>
+
+function startGame(){
+
+const config = {
+
+startScore:
+parseInt(
+document.getElementById("startScore").value
+),
+
+outRule:
+document.getElementById("outRule").value,
+
+inputMode:
+document.getElementById("inputMode").value,
+
+legs:
+parseInt(
+document.getElementById("legs").value
+)
+
+};
+
+localStorage.setItem(
+"gameConfig",
+JSON.stringify(config)
+);
+
+location.href="x01.html";
+
+}
+
+</script>
+
+</body>
+</html>
