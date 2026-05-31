@@ -3,40 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Einstellungen</title>
 
 <style>
-body{
-background:#111827;
-color:white;
+
+:root{
+--bg:#0f172a;
+--card:#1e293b;
+--accent:#dc2626;
+--text:#ffffff;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:Arial,sans-serif;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
 padding:20px;
+padding-bottom:100px;
+}
+
+h1{
+margin-bottom:20px;
 }
 
 .card{
-background:#1f2937;
+background:var(--card);
 padding:20px;
 border-radius:20px;
 margin-bottom:20px;
 }
 
+.setting{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 0;
+border-bottom:1px solid #334155;
+}
+
+.setting:last-child{
+border-bottom:none;
+}
+
+label{
+font-size:16px;
+}
+
+input[type="checkbox"]{
+width:24px;
+height:24px;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:12px;
+background:var(--accent);
+color:white;
+font-size:16px;
+font-weight:bold;
+margin-top:15px;
+}
+
 .nav{
 position:fixed;
-bottom:0;
 left:0;
 right:0;
-background:#0f172a;
+bottom:0;
+background:#111827;
 display:flex;
 justify-content:space-around;
 padding:15px;
+border-top:1px solid #333;
 }
 
 .nav a{
-color:white;
 text-decoration:none;
+color:white;
 }
-</style>
 
+.info{
+opacity:.75;
+font-size:14px;
+margin-top:10px;
+}
+
+</style>
 </head>
 
 <body>
@@ -45,24 +105,48 @@ text-decoration:none;
 
 <div class="card">
 
-<label>
-<input type="checkbox">
-Voice Helper
-</label>
+<div class="setting">
+<label>Sprachansagen</label>
+<input type="checkbox" id="voiceEnabled">
+</div>
 
-<br><br>
+<div class="setting">
+<label>Checkout-Hilfe anzeigen</label>
+<input type="checkbox" id="checkoutHelper" checked>
+</div>
 
-<label>
-<input type="checkbox">
-Debug Modus
-</label>
+<div class="setting">
+<label>Historie anzeigen</label>
+<input type="checkbox" id="showHistory" checked>
+</div>
 
-<br><br>
+<div class="setting">
+<label>Statistik anzeigen</label>
+<input type="checkbox" id="showStats" checked>
+</div>
 
-<label>
-<input type="checkbox">
-Komplexe Ansicht
-</label>
+<div class="setting">
+<label>Erweiterte Statistiken</label>
+<input type="checkbox" id="advancedStats">
+</div>
+
+<div class="setting">
+<label>Automatisch speichern</label>
+<input type="checkbox" id="autoSave" checked>
+</div>
+
+<div class="setting">
+<label>Einfache Ansicht</label>
+<input type="checkbox" id="simpleMode">
+</div>
+
+<button onclick="saveSettings()">
+Speichern
+</button>
+
+<div class="info">
+Weitere Einstellungen folgen in späteren Versionen.
+</div>
 
 </div>
 
@@ -71,6 +155,93 @@ Komplexe Ansicht
 <a href="stats.html">📊</a>
 <a href="settings.html">⚙️</a>
 </div>
+
+<script>
+
+const defaultSettings = {
+
+voiceEnabled:false,
+
+checkoutHelper:true,
+
+showHistory:true,
+
+showStats:true,
+
+advancedStats:false,
+
+autoSave:true,
+
+simpleMode:false
+
+};
+
+const saved =
+JSON.parse(
+localStorage.getItem("appSettings")
+);
+
+const settings =
+saved || defaultSettings;
+
+document.getElementById("voiceEnabled").checked =
+settings.voiceEnabled;
+
+document.getElementById("checkoutHelper").checked =
+settings.checkoutHelper;
+
+document.getElementById("showHistory").checked =
+settings.showHistory;
+
+document.getElementById("showStats").checked =
+settings.showStats;
+
+document.getElementById("advancedStats").checked =
+settings.advancedStats;
+
+document.getElementById("autoSave").checked =
+settings.autoSave;
+
+document.getElementById("simpleMode").checked =
+settings.simpleMode;
+
+function saveSettings(){
+
+const settings = {
+
+voiceEnabled:
+document.getElementById("voiceEnabled").checked,
+
+checkoutHelper:
+document.getElementById("checkoutHelper").checked,
+
+showHistory:
+document.getElementById("showHistory").checked,
+
+showStats:
+document.getElementById("showStats").checked,
+
+advancedStats:
+document.getElementById("advancedStats").checked,
+
+autoSave:
+document.getElementById("autoSave").checked,
+
+simpleMode:
+document.getElementById("simpleMode").checked
+
+};
+
+localStorage.setItem(
+"appSettings",
+JSON.stringify(settings)
+);
+
+alert("Einstellungen gespeichert");
+
+}
+
+</script>
 
 </body>
 </html>
