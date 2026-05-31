@@ -46,12 +46,12 @@ margin-bottom:8px;
 font-weight:bold;
 }
 
-select{
+select,input{
 width:100%;
 padding:14px;
 border:none;
 border-radius:12px;
-margin-bottom:20px;
+margin-bottom:16px;
 font-size:16px;
 }
 
@@ -81,14 +81,10 @@ border-top:1px solid #333;
 .nav a{
 text-decoration:none;
 color:white;
-font-size:18px;
 }
 
-.info{
-opacity:.8;
-font-size:14px;
-margin-top:-12px;
-margin-bottom:20px;
+.hidden{
+display:none;
 }
 
 </style>
@@ -100,52 +96,73 @@ margin-bottom:20px;
 
 <div class="card">
 
+<label>Spielmodus</label>
+
+<select id="gameMode" onchange="updateMode()">
+<option value="solo">Solo</option>
+<option value="vs">2 Spieler</option>
+<option value="ai">Gegen KI</option>
+</select>
+
+<label>Spieler 1</label>
+<input id="player1" value="Spieler 1">
+
+<div id="player2Container" class="hidden">
+
+<label>Spieler 2</label>
+<input id="player2" value="Spieler 2">
+
+</div>
+
+<div id="aiContainer" class="hidden">
+
+<label>KI-Stärke</label>
+
+<select id="aiLevel">
+<option>Anfänger</option>
+<option>Fortgeschritten</option>
+<option>Vereinsspieler</option>
+</select>
+
+</div>
+
 <label>Startscore</label>
 
 <select id="startScore">
-<option value="301">301</option>
-<option value="501" selected>501</option>
-<option value="701">701</option>
+<option>301</option>
+<option selected>501</option>
+<option>701</option>
 </select>
 
 <label>Out-Regel</label>
 
 <select id="outRule">
-<option value="double" selected>Double Out</option>
+<option value="double">Double Out</option>
 <option value="straight">Straight Out</option>
 </select>
-
-<div class="info">
-Double Out wird später im Wurf-Modus vollständig geprüft.
-</div>
 
 <label>Eingabemodus</label>
 
 <select id="inputMode">
-<option value="score" selected>Score-Modus</option>
+<option value="score">Score-Modus</option>
 <option value="throw">Wurf-Modus</option>
 </select>
-
-<div class="info">
-Score-Modus = schnelle Eingabe der Aufnahme<br>
-Wurf-Modus = Dart für Dart erfassen
-</div>
 
 <label>Legs</label>
 
 <select id="legs">
-<option value="3">Best of 3</option>
-<option value="5" selected>Best of 5</option>
-<option value="7">Best of 7</option>
-<option value="9">Best of 9</option>
+<option>3</option>
+<option selected>5</option>
+<option>7</option>
+<option>9</option>
 </select>
 
 <label>Sets</label>
 
 <select id="sets">
-<option value="1" selected>1 Set</option>
-<option value="3">Best of 3 Sets</option>
-<option value="5">Best of 5 Sets</option>
+<option selected>1</option>
+<option>3</option>
+<option>5</option>
 </select>
 
 <button onclick="startGame()">
@@ -162,9 +179,52 @@ Spiel starten
 
 <script>
 
+function updateMode(){
+
+const mode =
+document.getElementById("gameMode").value;
+
+document
+.getElementById("player2Container")
+.classList.add("hidden");
+
+document
+.getElementById("aiContainer")
+.classList.add("hidden");
+
+if(mode==="vs"){
+
+document
+.getElementById("player2Container")
+.classList.remove("hidden");
+
+}
+
+if(mode==="ai"){
+
+document
+.getElementById("aiContainer")
+.classList.remove("hidden");
+
+}
+
+}
+
 function startGame(){
 
 const config = {
+
+gameMode:
+document.getElementById("gameMode").value,
+
+player1:
+document.getElementById("player1").value,
+
+player2:
+document.getElementById("player2").value,
+
+aiLevel:
+document.getElementById("aiLevel").value,
 
 startScore:
 parseInt(
@@ -194,10 +254,11 @@ localStorage.setItem(
 JSON.stringify(config)
 );
 
-window.location.href =
-"x01.html";
+window.location.href="x01.html";
 
 }
+
+updateMode();
 
 </script>
 
