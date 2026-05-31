@@ -9,10 +9,9 @@
 <style>
 
 :root{
---bg:#111827;
---card:#1f2937;
+--bg:#0f172a;
+--card:#1e293b;
 --accent:#dc2626;
---green:#16a34a;
 --text:#ffffff;
 }
 
@@ -27,6 +26,7 @@ body{
 background:var(--bg);
 color:var(--text);
 padding:20px;
+padding-bottom:100px;
 }
 
 .header{
@@ -36,49 +36,44 @@ margin-bottom:30px;
 
 .logo{
 font-size:80px;
-margin-bottom:10px;
 }
 
 .subtitle{
-opacity:0.8;
+opacity:.8;
+margin-top:10px;
 }
 
 .card{
+display:block;
 background:var(--card);
 padding:20px;
 border-radius:20px;
 margin-bottom:15px;
 text-decoration:none;
-display:block;
 color:white;
-transition:0.2s;
-}
-
-.card:hover{
-transform:scale(1.02);
 }
 
 .card h2{
 margin-bottom:10px;
 }
 
-.card p{
-opacity:0.8;
+.card:hover{
+opacity:.9;
 }
 
-.bottom-nav{
+.nav{
 position:fixed;
 bottom:0;
 left:0;
 right:0;
-background:#0f172a;
+background:#111827;
 display:flex;
 justify-content:space-around;
 padding:15px;
 border-top:1px solid #333;
 }
 
-.bottom-nav a{
+.nav a{
 color:white;
 text-decoration:none;
 }
@@ -91,30 +86,32 @@ text-decoration:none;
 <div class="header">
 <div class="logo">🎯</div>
 <h1>Chappy Dart Trainer</h1>
-<p class="subtitle">Train. Score. Checkout. Repeat.</p>
+<div class="subtitle">
+Train • Score • Checkout • Repeat
+</div>
 </div>
 
-<a href="x01.html" class="card">
+<a href="x01-setup.html" class="card">
 <h2>🎯 X01</h2>
 <p>301 • 501 • 701</p>
 </a>
 
 <a href="#" class="card">
 <h2>🎯 Checkout Trainer</h2>
-<p>Kommt bald</p>
+<p>folgt später</p>
 </a>
 
 <a href="#" class="card">
 <h2>🎯 Doppeltraining</h2>
-<p>Kommt bald</p>
+<p>folgt später</p>
 </a>
 
 <a href="#" class="card">
-<h2>🎯 Around the Clock</h2>
-<p>Kommt bald</p>
+<h2>🎯 Around The Clock</h2>
+<p>folgt später</p>
 </a>
 
-<div class="bottom-nav">
+<div class="nav">
 <a href="index.html">🏠 Home</a>
 <a href="stats.html">📊 Statistik</a>
 <a href="settings.html">⚙️ Einstellungen</a>
