@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chappy Dart Trainer</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    margin:0;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+h1{
+    margin-top:0;
+}
+
+button{
+    padding:10px;
+    margin:5px;
+    cursor:pointer;
+}
+
+input,select{
+    padding:10px;
+    margin:5px;
+}
+
+.big{
+    font-size:48px;
+    font-weight:bold;
+}
+
+.hidden{
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎯 Chappy Dart Trainer</h1>
+
+<div class="card">
+<h2>Spiel</h2>
+
+<label>Startscore:</label>
+<select id="startScore">
+<option value="301">301</option>
+<option value="501" selected>501</option>
+<option value="701">701</option>
+</select>
+
+<label>Out:</label>
+<select id="outRule">
+<option value="double">Double Out</option>
+<option value="straight">Straight Out</option>
+</select>
+
+<label>Legs:</label>
+<select id="legs">
+<option value="3">Best of 3</option>
+<option value="5">Best of 5</option>
+<option value="7">Best of 7</option>
+</select>
+
+<button onclick="newLeg()">Neues Leg</button>
+</div>
+
+<div class="card">
+<div>REST</div>
+<div id="remaining" class="big">501</div>
+</div>
+
+<div class="card">
+<h3>Eingabe</h3>
+
+<input
+id="scoreInput"
+type="number"
+min="0"
+max="180"
+placeholder="Score eingeben">
+
+<button onclick="submitScore()">Eintragen</button>
+<button onclick="undo()">Undo</button>
+</div>
+
+<div class="card">
+<h3>Statistik</h3>
+
+<p>Average: <span id="avg">0.00</span></p>
+<p>Aufnahmen: <span id="visits">0</span></p>
+<p>100+: <span id="stat100">0</span></p>
+<p>140+: <span id="stat140">0</span></p>
+<p>180er: <span id="stat180">0</span></p>
+</div>
+
+<div class="card">
+<h3>Einstellungen</h3>
+
+<label>
+<input type="checkbox" id="voiceHelper">
+Voice Helper
+</label>
+
+<br>
+
+<label>
+<input type="checkbox" id="debugMode">
+Debug-Modus
+</label>
+
+<br>
+
+<label>
+<input type="checkbox" id="advancedMode">
+Komplexe Ansicht
+</label>
+</div>
+
+<div class="card">
+<h3>Historie</h3>
+<ul id="history"></ul>
+</div>
+
+<div class="card hidden" id="debugBox">
+<h3>Debug</h3>
+<pre id="debugText"></pre>
+</div>
+
+<script>
+
+let game = {};
+
+function saveSettings(){
+    localStorage.setItem("voiceHelper",
+        document.getElementById("voiceHelper").checked);
+
+    localStorage.setItem("debugMode",
+        document.getElementById("debugMode").checked);
+
+    localStorage.setItem("advancedMode",
+        document.getElementById("advancedMode").checked);
+
+    updateDebugVisibility();
+}
+
+function loadSettings(){
+
+    document.getElementById("voiceHelper").checked =
+        localStorage.getItem("voiceHelper") === "true";
+
+    document.getElementById("debugMode").checked =
+        localStorage.getItem("debugMode") === "true";
+
+    document.getElementById("advancedMode").checked =
+        localStorage.getItem("advancedMode") === "true";
+
+    updateDebugVisibility();
+}
+
+function updateDebugVisibility(){
+
+    const active =
+        document.getElementById("debugMode").checked;
+
+    document.getElementById("debugBox")
+        .classList.toggle("hidden", !active);
+}
+
+document
+.getElementById("voiceHelper")
+.addEventListener("change", saveSettings);
+
+document
+.getElementById("debugMode")
+.addEventListener("change", saveSettings);
+
+document
+.getElementById("advancedMode")
+.addEventListener("change", saveSettings);
+
+function newLeg(){
+
+    const start =
+        parseInt(
+            document.getElementById("startScore").value
+        );
+
+    game = {
+        start:start,
+        remaining:start,
+        scores:[]
+    };
+
+    render();
+}
+
+function submitScore(){
+
+    const field =
+        document.getElementById("scoreInput");
+
+    const score =
+        parseInt(field.value);
+
+    if(isNaN(score)){
+        return;
+    }
+
+    if(score < 0 || score > 180){
+        alert("Ungültiger Score");
+        return;
+    }
+
+    const rule =
+        document.getElementById("outRule").value;
+
+    const after =
+        game.remaining - score;
+
+    if(after < 0){
+        alert("Bust");
+        return;
+    }
+
+    if(rule === "double" && after === 1){
+        alert("Bust");
+        return;
+    }
+
+    game.remaining = after;
+    game.scores.push(score);
+
+    if(after === 0){
+        alert("Leg gewonnen!");
+    }
+
+    field.value = "";
+
+    render();
+}
+
+function undo(){
+
+    if(game.scores.length === 0){
+        return;
+    }
+
+    const last =
+        game.scores.pop();
+
+    game.remaining += last;
+
+    render();
+}
+
+function render(){
+
+    document.getElementById("remaining")
+        .textContent = game.remaining;
+
+    document.getElementById("visits")
+        .textContent = game.scores.length;
+
+    let total =
+        game.scores.reduce(
+            (a,b)=>a+b,
+            0
+        );
+
+    let avg =
+        game.scores.length > 0
+        ? total / game.scores.length
+        : 0;
+
+    document.getElementById("avg")
+        .textContent = avg.toFixed(2);
+
+    document.getElementById("stat100")
+        .textContent =
+        game.scores.filter(x=>x>=100).length;
+
+    document.getElementById("stat140")
+        .textContent =
+        game.scores.filter(x=>x>=140).length;
+
+    document.getElementById("stat180")
+        .textContent =
+        game.scores.filter(x=>x===180).length;
+
+    const history =
+        document.getElementById("history");
+
+    history.innerHTML = "";
+
+    [...game.scores]
+    .reverse()
+    .forEach(score=>{
+
+        const li =
+            document.createElement("li");
+
+        li.textContent =
+            score + " Punkte";
+
+        history.appendChild(li);
+    });
+
+    document.getElementById("debugText")
+        .textContent =
+        JSON.stringify(game,null,2);
+}
+
+loadSettings();
+newLeg();
+
+</script>
+
+</body>
+</html>
