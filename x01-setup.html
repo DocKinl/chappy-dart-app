@@ -11,16 +11,26 @@
 :root{
 --bg:#0f172a;
 --card:#1e293b;
---text:white;
 --accent:#dc2626;
+--text:#ffffff;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
 }
 
 body{
 background:var(--bg);
 color:var(--text);
-font-family:Arial,sans-serif;
 padding:20px;
 padding-bottom:100px;
+}
+
+h1{
+margin-bottom:20px;
 }
 
 .card{
@@ -30,12 +40,19 @@ border-radius:20px;
 margin-bottom:20px;
 }
 
+label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+}
+
 select{
 width:100%;
-padding:15px;
-margin-top:10px;
-margin-bottom:15px;
-border-radius:10px;
+padding:14px;
+border:none;
+border-radius:12px;
+margin-bottom:20px;
+font-size:16px;
 }
 
 button{
@@ -46,22 +63,32 @@ border-radius:12px;
 background:var(--accent);
 color:white;
 font-size:18px;
+font-weight:bold;
 }
 
 .nav{
 position:fixed;
-bottom:0;
 left:0;
 right:0;
+bottom:0;
 background:#111827;
 display:flex;
 justify-content:space-around;
 padding:15px;
+border-top:1px solid #333;
 }
 
 .nav a{
-color:white;
 text-decoration:none;
+color:white;
+font-size:18px;
+}
+
+.info{
+opacity:.8;
+font-size:14px;
+margin-top:-12px;
+margin-bottom:20px;
 }
 
 </style>
@@ -84,16 +111,25 @@ text-decoration:none;
 <label>Out-Regel</label>
 
 <select id="outRule">
-<option value="double">Double Out</option>
+<option value="double" selected>Double Out</option>
 <option value="straight">Straight Out</option>
 </select>
+
+<div class="info">
+Double Out wird später im Wurf-Modus vollständig geprüft.
+</div>
 
 <label>Eingabemodus</label>
 
 <select id="inputMode">
-<option value="score">Score-Modus</option>
+<option value="score" selected>Score-Modus</option>
 <option value="throw">Wurf-Modus</option>
 </select>
+
+<div class="info">
+Score-Modus = schnelle Eingabe der Aufnahme<br>
+Wurf-Modus = Dart für Dart erfassen
+</div>
 
 <label>Legs</label>
 
@@ -101,6 +137,15 @@ text-decoration:none;
 <option value="3">Best of 3</option>
 <option value="5" selected>Best of 5</option>
 <option value="7">Best of 7</option>
+<option value="9">Best of 9</option>
+</select>
+
+<label>Sets</label>
+
+<select id="sets">
+<option value="1" selected>1 Set</option>
+<option value="3">Best of 3 Sets</option>
+<option value="5">Best of 5 Sets</option>
 </select>
 
 <button onclick="startGame()">
@@ -110,9 +155,9 @@ Spiel starten
 </div>
 
 <div class="nav">
-<a href="index.html">🏠 Home</a>
-<a href="stats.html">📊 Statistik</a>
-<a href="settings.html">⚙️ Einstellungen</a>
+<a href="index.html">🏠</a>
+<a href="stats.html">📊</a>
+<a href="settings.html">⚙️</a>
 </div>
 
 <script>
@@ -135,6 +180,11 @@ document.getElementById("inputMode").value,
 legs:
 parseInt(
 document.getElementById("legs").value
+),
+
+sets:
+parseInt(
+document.getElementById("sets").value
 )
 
 };
@@ -144,7 +194,8 @@ localStorage.setItem(
 JSON.stringify(config)
 );
 
-location.href="x01.html";
+window.location.href =
+"x01.html";
 
 }
 
