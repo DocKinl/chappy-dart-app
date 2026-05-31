@@ -8,41 +8,67 @@
 
 <style>
 
-body{
-background:#111827;
-color:white;
-font-family:Arial,sans-serif;
-padding:20px;
+:root{
+--bg:#0f172a;
+--card:#1e293b;
+--accent:#dc2626;
+--text:#ffffff;
 }
 
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+padding:20px;
+padding-bottom:100px;
+}
+
+h1{
+margin-bottom:20px;
 }
 
 .card{
-background:#1f2937;
+background:var(--card);
 padding:20px;
 border-radius:20px;
-text-align:center;
+margin-bottom:15px;
+}
+
+.card h2{
+margin-bottom:15px;
+}
+
+.stat{
+display:flex;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid #334155;
+}
+
+.stat:last-child{
+border-bottom:none;
 }
 
 .value{
-font-size:36px;
 font-weight:bold;
-margin-top:10px;
 }
 
 .nav{
 position:fixed;
-bottom:0;
 left:0;
 right:0;
-background:#0f172a;
+bottom:0;
+background:#111827;
 display:flex;
 justify-content:space-around;
 padding:15px;
+border-top:1px solid #333;
 }
 
 .nav a{
@@ -50,34 +76,153 @@ color:white;
 text-decoration:none;
 }
 
-</style>
+.section{
+margin-bottom:20px;
+}
 
+</style>
 </head>
 
 <body>
 
 <h1>📊 Statistik</h1>
 
-<div class="grid">
+<div class="section">
 
 <div class="card">
-Average
-<div class="value">0.00</div>
+
+<h2>🎯 X01 - 301</h2>
+
+<div class="stat">
+<span>Gespielte Legs</span>
+<span class="value" id="301_legs">0</span>
+</div>
+
+<div class="stat">
+<span>Gewonnene Legs</span>
+<span class="value" id="301_wins">0</span>
+</div>
+
+<div class="stat">
+<span>Average</span>
+<span class="value" id="301_avg">0.00</span>
+</div>
+
+<div class="stat">
+<span>Best Score</span>
+<span class="value" id="301_best">0</span>
+</div>
+
 </div>
 
 <div class="card">
-180er
-<div class="value">0</div>
+
+<h2>🎯 X01 - 501</h2>
+
+<div class="stat">
+<span>Gespielte Legs</span>
+<span class="value" id="501_legs">0</span>
+</div>
+
+<div class="stat">
+<span>Gewonnene Legs</span>
+<span class="value" id="501_wins">0</span>
+</div>
+
+<div class="stat">
+<span>Average</span>
+<span class="value" id="501_avg">0.00</span>
+</div>
+
+<div class="stat">
+<span>Best Score</span>
+<span class="value" id="501_best">0</span>
+</div>
+
 </div>
 
 <div class="card">
-140+
-<div class="value">0</div>
+
+<h2>🎯 X01 - 701</h2>
+
+<div class="stat">
+<span>Gespielte Legs</span>
+<span class="value" id="701_legs">0</span>
+</div>
+
+<div class="stat">
+<span>Gewonnene Legs</span>
+<span class="value" id="701_wins">0</span>
+</div>
+
+<div class="stat">
+<span>Average</span>
+<span class="value" id="701_avg">0.00</span>
+</div>
+
+<div class="stat">
+<span>Best Score</span>
+<span class="value" id="701_best">0</span>
+</div>
+
 </div>
 
 <div class="card">
-100+
-<div class="value">0</div>
+
+<h2>🎯 Checkout Training</h2>
+
+<div class="stat">
+<span>Versuche</span>
+<span class="value">0</span>
+</div>
+
+<div class="stat">
+<span>Erfolgreich</span>
+<span class="value">0</span>
+</div>
+
+<div class="stat">
+<span>Quote</span>
+<span class="value">0 %</span>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🎯 Doppeltraining</h2>
+
+<div class="stat">
+<span>Geworfene Darts</span>
+<span class="value">0</span>
+</div>
+
+<div class="stat">
+<span>Getroffene Doppel</span>
+<span class="value">0</span>
+</div>
+
+<div class="stat">
+<span>Quote</span>
+<span class="value">0 %</span>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🎯 Around The Clock</h2>
+
+<div class="stat">
+<span>Absolvierte Runden</span>
+<span class="value">0</span>
+</div>
+
+<div class="stat">
+<span>Bestleistung</span>
+<span class="value">0</span>
+</div>
+
 </div>
 
 </div>
@@ -87,6 +232,21 @@ Average
 <a href="stats.html">📊</a>
 <a href="settings.html">⚙️</a>
 </div>
+
+<script>
+
+function loadStats(){
+
+const stats =
+JSON.parse(
+localStorage.getItem("dartStats")
+) || {};
+
+}
+
+loadStats();
+
+</script>
 
 </body>
 </html>
